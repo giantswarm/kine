@@ -17,3 +17,5 @@ require (
 )
 
 replace github.com/coreos/etcd => github.com/coreos/etcd v3.3.25+incompatible
+
+replace github.com/gorilla/websocket => github.com/gorilla/websocket v1.4.2
