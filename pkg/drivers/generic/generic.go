@@ -42,6 +42,7 @@ var (
 				ikv.id <= ?
 			ORDER BY ikv.id DESC LIMIT 1)`
 
+	// nolint:gosec
 	listSQL = fmt.Sprintf(`SELECT (%s), (%s), %s
 		FROM kine kv
 		JOIN (
@@ -55,7 +56,7 @@ var (
 		WHERE
 			  (kv.deleted = 0 OR ?)
 		ORDER BY kv.id ASC
-		`, revSQL, compactRevSQL, columns)  // nolint:gosec
+		`, revSQL, compactRevSQL, columns)
 )
 
 type Stripped string
@@ -193,21 +194,23 @@ func Open(ctx context.Context, driverName, dataSourceName string, connPoolConfig
 	return &Generic{
 		DB: db,
 
+		//nolint:gosec
 		GetRevisionSQL: q(fmt.Sprintf(`
 			SELECT
 			0, 0, %s
 			FROM kine kv
-			WHERE kv.id = ?`, columns), paramCharacter, numbered), // nolint:gosec
+			WHERE kv.id = ?`, columns), paramCharacter, numbered),
 
 		GetCurrentSQL:        q(fmt.Sprintf(listSQL, ""), paramCharacter, numbered),
 		ListRevisionStartSQL: q(fmt.Sprintf(listSQL, "AND mkv.id <= ?"), paramCharacter, numbered),
 		GetRevisionAfterSQL:  q(fmt.Sprintf(listSQL, idOfKey), paramCharacter, numbered),
 
+		//nolint:gosec
 		CountSQL: q(fmt.Sprintf(`
 			SELECT (%s), COUNT(c.theid)
 			FROM (
 				%s
-			) c`, revSQL, fmt.Sprintf(listSQL, "")), paramCharacter, numbered), // nolint:gosec
+			) c`, revSQL, fmt.Sprintf(listSQL, "")), paramCharacter, numbered),
 
 		AfterSQL: q(fmt.Sprintf(`
 			SELECT (%s), (%s), %s
