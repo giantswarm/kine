@@ -1,0 +1,26 @@
+version: 2.1
+
+orbs:
+  architect: giantswarm/architect@0.13.0
+
+workflows:
+  build:
+    jobs:
+      - architect/go-build:
+          name: go-build
+          binary: kine
+          filters:
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-docker:
+          name: push-to-quay
+          context: architect
+          image: "quay.io/giantswarm/kine"
+          username_envar: "QUAY_USERNAME"
+          password_envar: "QUAY_PASSWORD"
+          requires:
+            - go-build
+          filters:
+            tags:
+              only: /^v.*/
