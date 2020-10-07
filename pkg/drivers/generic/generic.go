@@ -212,6 +212,7 @@ func Open(ctx context.Context, driverName, dataSourceName string, connPoolConfig
 				%s
 			) c`, revSQL, fmt.Sprintf(listSQL, "")), paramCharacter, numbered),
 
+		//nolint:gosec
 		AfterSQL: q(fmt.Sprintf(`
 			SELECT (%s), (%s), %s
 			FROM kine kv
