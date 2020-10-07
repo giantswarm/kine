@@ -55,7 +55,7 @@ var (
 		WHERE
 			  (kv.deleted = 0 OR ?)
 		ORDER BY kv.id ASC
-		`, revSQL, compactRevSQL, columns)
+		`, revSQL, compactRevSQL, columns)  // nolint:gosec
 )
 
 type Stripped string
@@ -197,7 +197,7 @@ func Open(ctx context.Context, driverName, dataSourceName string, connPoolConfig
 			SELECT
 			0, 0, %s
 			FROM kine kv
-			WHERE kv.id = ?`, columns), paramCharacter, numbered),
+			WHERE kv.id = ?`, columns), paramCharacter, numbered), // nolint:gosec
 
 		GetCurrentSQL:        q(fmt.Sprintf(listSQL, ""), paramCharacter, numbered),
 		ListRevisionStartSQL: q(fmt.Sprintf(listSQL, "AND mkv.id <= ?"), paramCharacter, numbered),
@@ -207,7 +207,7 @@ func Open(ctx context.Context, driverName, dataSourceName string, connPoolConfig
 			SELECT (%s), COUNT(c.theid)
 			FROM (
 				%s
-			) c`, revSQL, fmt.Sprintf(listSQL, "")), paramCharacter, numbered),
+			) c`, revSQL, fmt.Sprintf(listSQL, "")), paramCharacter, numbered), // nolint:gosec
 
 		AfterSQL: q(fmt.Sprintf(`
 			SELECT (%s), (%s), %s
