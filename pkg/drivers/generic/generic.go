@@ -42,6 +42,7 @@ var (
 				ikv.id <= ?
 			ORDER BY ikv.id DESC LIMIT 1)`
 
+	// nolint:gosec
 	listSQL = fmt.Sprintf(`SELECT (%s), (%s), %s
 		FROM kine kv
 		JOIN (
@@ -193,6 +194,7 @@ func Open(ctx context.Context, driverName, dataSourceName string, connPoolConfig
 	return &Generic{
 		DB: db,
 
+		//nolint:gosec
 		GetRevisionSQL: q(fmt.Sprintf(`
 			SELECT
 			0, 0, %s
@@ -203,12 +205,14 @@ func Open(ctx context.Context, driverName, dataSourceName string, connPoolConfig
 		ListRevisionStartSQL: q(fmt.Sprintf(listSQL, "AND mkv.id <= ?"), paramCharacter, numbered),
 		GetRevisionAfterSQL:  q(fmt.Sprintf(listSQL, idOfKey), paramCharacter, numbered),
 
+		//nolint:gosec
 		CountSQL: q(fmt.Sprintf(`
 			SELECT (%s), COUNT(c.theid)
 			FROM (
 				%s
 			) c`, revSQL, fmt.Sprintf(listSQL, "")), paramCharacter, numbered),
 
+		//nolint:gosec
 		AfterSQL: q(fmt.Sprintf(`
 			SELECT (%s), (%s), %s
 			FROM kine kv

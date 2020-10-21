@@ -15,3 +15,7 @@ require (
 	go.etcd.io/etcd v0.0.0-20191023171146-3cf2f69b5738
 	google.golang.org/grpc v1.23.1
 )
+
+replace github.com/coreos/etcd => github.com/coreos/etcd v3.3.25+incompatible
+
+replace github.com/gorilla/websocket => github.com/gorilla/websocket v1.4.2

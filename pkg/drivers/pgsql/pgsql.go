@@ -17,7 +17,8 @@ import (
 )
 
 const (
-	defaultDSN = "postgres://postgres:postgres@localhost/"
+	defaultDSN        = "postgres://postgres:postgres@localhost/"
+	sslModeVerifyFull = "verify-full"
 )
 
 var (
@@ -151,15 +152,15 @@ func prepareDSN(dataSourceName string, tlsInfo tls.Config) (string, error) {
 	sslmode := ""
 	if _, ok := queryMap["sslcert"]; tlsInfo.CertFile != "" && !ok {
 		params.Add("sslcert", tlsInfo.CertFile)
-		sslmode = "verify-full"
+		sslmode = sslModeVerifyFull
 	}
 	if _, ok := queryMap["sslkey"]; tlsInfo.KeyFile != "" && !ok {
 		params.Add("sslkey", tlsInfo.KeyFile)
-		sslmode = "verify-full"
+		sslmode = sslModeVerifyFull
 	}
 	if _, ok := queryMap["sslrootcert"]; tlsInfo.CAFile != "" && !ok {
 		params.Add("sslrootcert", tlsInfo.CAFile)
-		sslmode = "verify-full"
+		sslmode = sslModeVerifyFull
 	}
 	if _, ok := queryMap["sslmode"]; !ok && sslmode != "" {
 		params.Add("sslmode", sslmode)
